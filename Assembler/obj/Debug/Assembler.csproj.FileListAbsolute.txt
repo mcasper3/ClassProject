@@ -1,0 +1,6 @@
+c:\users\mike c\documents\visual studio 2013\Projects\Assembler\Assembler\bin\Debug\Assembler.exe.config
+C:\Users\Mike C\Documents\Visual Studio 2013\Projects\Assembler\Assembler\obj\Debug\Assembler.csprojResolveAssemblyReference.cache
+C:\Users\Mike C\Documents\Visual Studio 2013\Projects\Assembler\Assembler\bin\Debug\Assembler.exe
+C:\Users\Mike C\Documents\Visual Studio 2013\Projects\Assembler\Assembler\bin\Debug\Assembler.pdb
+C:\Users\Mike C\Documents\Visual Studio 2013\Projects\Assembler\Assembler\obj\Debug\Assembler.exe
+C:\Users\Mike C\Documents\Visual Studio 2013\Projects\Assembler\Assembler\obj\Debug\Assembler.pdb

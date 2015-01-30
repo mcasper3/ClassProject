@@ -1,0 +1,108 @@
+----------------------------------------------------------------------------------------------------------------------------------------
+Instruction syntax:
+----------------------------------------------------------------------------------------------------------------------------------------
+R-Type:
+----------------------------------------------------------------------------------------------------------------------------------------
+add/sub/and/or/xor $ra $rb $rc ; performs an operation of add/sub/and/or/xor of $rb and $rc
+Ex: sub $r1 $r2 $r3 ; subtracts the value stored in $r3 from $r2 and stores the result in $r1
+
+cmp $ra $rb ; performs a compare operation on $ra and $rb ($ra - $rb) and updates the N, Z, C, V flags based on the result
+
+jr $ra      ; performs a jump command setting the PC to the value in $ra
+========================================================================================================================================
+D-Type:
+----------------------------------------------------------------------------------------------------------------------------------------
+lw $ra (Imm)$rb	; loads the contents of $rb into the contents of the memory address imm + the value in $rb
+sw $ra (Imm)$rb	; stores the contents of the memory address imm + the value in $rb in $ra
+addi $ra $rb imm		; adds the value of $rb and imm and stores the result in $ra
+========================================================================================================================================
+B-Type:
+----------------------------------------------------------------------------------------------------------------------------------------
+b imm (or label)		; stores the value of PC + 1 + immed (or label) in PC
+bal imm (or label)		; stores the value of PC + 1 in the return addres register and stores PC + 1 + immed (or label) in PC
+========================================================================================================================================
+J-Type:
+----------------------------------------------------------------------------------------------------------------------------------------
+j const			   ; sets PC = const
+jal const		   ; stores the value of PC + 1 in the return address register and sets PC = const
+li $ra const (or label)    ; loads the value of const (or label) into $ra
+========================================================================================================================================
+Use of conditionals:
+----------------------------------------------------------------------------------------------------------------------------------------
+A conditional can be added onto the end of a R-Type, B-Type, or D-Type instruction. If a conditional is used, the N, Z, C, V flags must
+be updated by either a compare (cmp) instruction or an instruction that sets the S bit BEFORE the conditional is executed. Setting 
+the S bit will be explained in the next section of this file.
+----------------------------------------------------------------------------------------------------------------------------------------
+Table of Conditionals:
+----------------------------------------------------------------------------------------------------------------------------------------
+AL			Always
+NV			Never
+EQ			Equal
+NE			Not Equal
+VS			Overflow
+VC			No Overflow
+MI			Negative
+PL			Positive or Zero
+CS			Unsigned Higher or Same
+CC			Unsigned Lower
+HI			Unsigned Higher
+LS			Unsigned Lower or Same
+GT			Greater Than
+LT			Less Than
+GE			Greater Than or Equal
+LE			Less Than or Equal
+----------------------------------------------------------------------------------------------------------------------------------------
+Examples:
+----------------------------------------------------------------------------------------------------------------------------------------
+Values of Registers:
+$r2 <- 4
+$r3 <- 5
+
+Instructions:
+cmp $r2 $r3
+beq -4
+Result: the branch instruction would not execute because the contents of $r2 and $r3 are not equal
+
+cmp $r2 $r3
+blt -4
+Result: the branch instruction does execute because the contents of $r2 are less than the contents of $r3
+========================================================================================================================================
+Setting the S bit:
+----------------------------------------------------------------------------------------------------------------------------------------
+A compare instruction will always set the S bit. However, other instructions can set the S bit as well. To have a different R-Type
+or D-Type instruction set the S bit, append an s to the end of the instruction. The N, Z, C, V flags will be updated based on the
+result of the instruction operation.
+========================================================================================================================================
+Examples:
+----------------------------------------------------------------------------------------------------------------------------------------
+adds $ra $rb $c			; sets the N, Z, C, V flags based on the operation $rb + $rc
+addeqs $ra $rb $rc		; sets the N, Z, C, V flags based on the operation $rb + $rc. In this example, the flags will only be
+				; set if the instruction executes. The instruction will only execute if the contents of $rb and $rc
+				; are equal.
+========================================================================================================================================
+
+Example File:
+
+.global _start
+; this is an example comment
+_start: addi $sp $r0 10
+label: addi $r3 $r2 -64 		; use of a label
+xor $r4 $r3 $r2
+beq lab
+b label
+lw $r2 (40)$r0				; another comment
+lw $r4 (41)$r0
+lw $r3 (0)$r2
+lw $r5 (0)$r4
+li $r6 label
+lw $r7 (0)$r6
+lw $r8 (1)$r6
+j 8
+
+.data
+label: .word 15, 12
+quit: .byte 14, 12
+ok: .ascii "person"
+
+________________________________________________________________________________________________________________________________________
+
